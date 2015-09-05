@@ -4,21 +4,28 @@ static Window *window;
 static TextLayer *slazer_text_layer;
 
 static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
-  // text_layer_set_text(slazer_text_layer, "Select");
 }
 
 static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
-  // text_layer_set_text(slazer_text_layer, "Up");
+}
+
+static void availability_handler(SmartstrapServiceId s, bool is_available) {
+
 }
 
 static void momentary_down_handler(ClickRecognizerRef recognizer, void *context) {
-  // text_layer_set_text(slazer_text_layer, "Down");
   text_layer_set_text_color(slazer_text_layer, GColorRed);
+  smartstrap_subscribe((SmartstrapHandlers) {
+    .availability_did_change = availability_handler,
+    .did_read = NULL,
+    .did_write = NULL,
+    .notified = NULL
+  });
 }
 
 static void momentary_up_handler(ClickRecognizerRef recognizer, void *context) {
-  // text_layer_set_text(slazer_text_layer, "Down");
   text_layer_set_text_color(slazer_text_layer, GColorWhite);
+  smartstrap_unsubscribe();
 }
 
 static void click_config_provider(void *context) {
