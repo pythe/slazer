@@ -22,8 +22,16 @@ static void deactivate_laser() {
   smartstrap_unsubscribe();
 }
 
+static void shake_handler(AccelAxisType axis, int32_t direction) {
+  if (axis == ACCEL_AXIS_Y) {
+    activate_laser();
+    app_timer_register(3000, deactivate_laser, NULL);
+  }
+}
+
 static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
   activate_laser();
+  app_timer_register(60000, deactivate_laser, NULL);
 }
 
 static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
@@ -54,7 +62,7 @@ static TextLayer* create_text_layer(char* content, Layer* parent, int x, int y, 
   text_layer_set_text(textLayer, content);
   text_layer_set_background_color(textLayer, GColorBlack);
   text_layer_set_text_color(textLayer, GColorWhite);
-  text_layer_set_font(textLayer, fonts_get_system_font(FONT_KEY_GOTHIC_28));
+  text_layer_set_font(textLayer, fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD));
   text_layer_set_text_alignment(textLayer, alignment);
   layer_add_child(parent, text_layer_get_layer(textLayer));
 
@@ -78,6 +86,7 @@ static void init(void) {
   window = window_create();
   window_set_background_color(window, GColorBlack);
   window_set_click_config_provider(window, click_config_provider);
+  accel_tap_service_subscribe(shake_handler);
   window_set_window_handlers(window, (WindowHandlers) {
     .load = window_load,
     .unload = window_unload,
