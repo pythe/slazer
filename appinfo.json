@@ -1,16 +1,13 @@
 {
   "uuid": "4e254250-8b7b-4d79-b2d9-3ea10addea02",
-  "shortName": "slazer",
-  "longName": "slazer",
-  "companyName": "MakeAwesomeHappen",
+  "shortName": "SLAZER",
+  "longName": "SLAZER",
+  "companyName": "Richard Tracy Brand",
   "versionLabel": "1.0",
   "sdkVersion": "3",
   "targetPlatforms": ["basalt"],
   "watchapp": {
     "watchface": false
-  },
-  "appKeys": {
-    "dummy": 0
   },
   "resources": {
     "media": []

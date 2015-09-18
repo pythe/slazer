@@ -23,10 +23,8 @@ static void deactivate_laser() {
 }
 
 static void shake_handler(AccelAxisType axis, int32_t direction) {
-  if (axis == ACCEL_AXIS_Y) {
     activate_laser();
     app_timer_register(3000, deactivate_laser, NULL);
-  }
 }
 
 static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
@@ -57,12 +55,12 @@ static void click_config_provider(void *context) {
       momentary_up_handler, NULL);
 }
 
-static TextLayer* create_text_layer(char* content, Layer* parent, int x, int y, int xSize, int ySize, uint8_t alignment) {
+static TextLayer* create_text_layer(char* content, Layer* parent, int x, int y, int xSize, int ySize, uint8_t alignment, GColor8 color) {
   TextLayer * textLayer = text_layer_create((GRect) { .origin = { x, y }, .size = { xSize, ySize } });
   text_layer_set_text(textLayer, content);
   text_layer_set_background_color(textLayer, GColorBlack);
-  text_layer_set_text_color(textLayer, GColorWhite);
-  text_layer_set_font(textLayer, fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD));
+  text_layer_set_text_color(textLayer, color);
+  text_layer_set_font(textLayer, fonts_get_system_font(FONT_KEY_BITHAM_30_BLACK));
   text_layer_set_text_alignment(textLayer, alignment);
   layer_add_child(parent, text_layer_get_layer(textLayer));
 
@@ -72,10 +70,10 @@ static TextLayer* create_text_layer(char* content, Layer* parent, int x, int y, 
 static void window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
   GRect bounds = layer_get_bounds(window_layer);
-  slazer_text_layer = create_text_layer("SLAZER", window_layer, 0, 128, bounds.size.w - 5, 28, GTextAlignmentRight);
-  on_text_layer     = create_text_layer("ON",     window_layer, 0,  67, bounds.size.w - 5, 28, GTextAlignmentRight);
-  off_text_layer    = create_text_layer("OFF",    window_layer, 0,  10, bounds.size.w - 5, 28, GTextAlignmentRight);
-  back_text_layer   = create_text_layer("BACK",   window_layer, 0,  10, 70,                28, GTextAlignmentLeft);
+  slazer_text_layer = create_text_layer("SLAZER", window_layer, 0, 123, bounds.size.w - 5, 30, GTextAlignmentRight, GColorWhite);
+  on_text_layer     = create_text_layer("ON",     window_layer, 0,  62, bounds.size.w - 5, 30, GTextAlignmentRight, GColorWhite);
+  off_text_layer    = create_text_layer("OFF",    window_layer, 0,  7, bounds.size.w - 5, 30, GTextAlignmentRight, GColorWhite);
+  back_text_layer   = create_text_layer("EXIT",   window_layer, 0,  7, 75,                30, GTextAlignmentLeft, GColorDarkGray);
 }
 
 static void window_unload(Window *window) {
